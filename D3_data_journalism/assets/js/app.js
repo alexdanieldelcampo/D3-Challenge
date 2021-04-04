@@ -24,22 +24,6 @@ var chartGroup = svg.append("g")
 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 
-// initital graph data/parameters
-var chosenXAxis = "hair_length";
-
-// function used for updating x-scale var upon click on axis label
-function xScale(Data, chosenXAxis) {
-  // create scales
-  var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(Data, d => d[chosenXAxis]) * 0.8,
-      d3.max(Data, d => d[chosenXAxis]) * 1.2
-    ])
-    .range([0, width]);
-
-  return xLinearScale;
-
-}
-
 
 
 var state_names = []
@@ -77,6 +61,29 @@ d3.csv("assets/data/data.csv").then(function(censusData){
     })
 
     
+    // create scale functions
+    // ==============================
+    var xLinearScale = d3.scaleLinear()
+      .domain([d3.extent(state_poverty, d => d)])
+      .range([0, width]);
+
+    var yLinearScale = d3.scaleLinear()
+      .domain([d3.extent(state_lackHealth, d => d)])
+      .range([height, 0]);
+
+    // Create axis functions
+    // ==============================
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
+    chartGroup.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(bottomAxis);
+
+    chartGroup.append("g")
+    .call(leftAxis);
+
+
 
 });
 
