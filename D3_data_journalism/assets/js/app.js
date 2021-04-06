@@ -194,9 +194,39 @@ console.log(data.abbr)
     .text("Household Income (Median)");
 
 
+// creating y-axis labels for clicking
+    var ylabelsGroup = chartGroup.append("g")
+    .attr("transform", `translate(${0 - margin.left + 45}, ${height/2})`);
 
+    var HealthcareLabel = ylabelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("dy", "1em")
+    .attr("class", "axisText")
+    .attr("value", "poverty") // value to grab for event listener
+    .classed("active", true)
+    .text("Lack of Healthcare (%)");
 
+    var SmokingLabel = ylabelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0)
+    .attr("y", -20)
+    .attr("dy", "1em")
+    .attr("class", "axisText")
+    .attr("value", "smoking") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Smokes (%)");
 
+    var ObeseLabel = ylabelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0)
+    .attr("y", -40)
+    .attr("dy", "1em")
+    .attr("class", "axisText")
+    .attr("value", "obesity") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Obese (%)");
 
 
 
@@ -210,13 +240,13 @@ console.log(data.abbr)
     //   .attr("class", "axisText")
     //   .text("Poverty Rate (%)");
 
-    chartGroup.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left + 40)
-      .attr("x", 0 - (height / 2))
-      .attr("dy", "1em")
-      .attr("class", "axisText")
-      .text("Lack of Healthcare (%)");
+    // chartGroup.append("text")
+    //   .attr("transform", "rotate(-90)")
+    //   .attr("y", 0 - margin.left + 40)
+    //   .attr("x", 0 - (height / 2))
+    //   .attr("dy", "1em")
+    //   .attr("class", "axisText")
+    //   .text("Lack of Healthcare (%)");
 
   }).catch(function(error) {
     console.log(error);
