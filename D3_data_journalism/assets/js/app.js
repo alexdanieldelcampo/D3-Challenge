@@ -51,7 +51,7 @@ var chosenYAxis = "healthcare"
 
 function yScale(censusData, chosenYAxis) {
 var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenYAxis]), d3.max(censusData, d => d[chosenYAxis])])
+      .domain([d3.min(censusData, d => d[chosenYAxis])  , d3.max(censusData, d => d[chosenYAxis])])
       .range([height, 0]);
 
     return yLinearScale
@@ -94,7 +94,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   var ylabel;
 
   if (chosenXAxis === "poverty") {
-    xlabel = "Poverty (%):";
+    xlabel = "Poverty (%)";
   }
   else if (chosenXAxis === "age") {
     xlabel = "Age (Median)";
@@ -121,8 +121,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
   circlesGroup.call(toolTip);
 
-  circlesGroup.on("mouseover", function(censusData) {
-    toolTip.show(censusData);
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data, this)
   })
     // onmouseout event
     .on("mouseout", function(data, index) {
