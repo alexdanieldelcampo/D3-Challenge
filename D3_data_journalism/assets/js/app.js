@@ -26,13 +26,13 @@ var chartGroup = svg.append("g")
 
 
 
-var state_names = []
-var state_obesity = []
-var state_smoking = []
-var state_lackHealth = []
-var state_poverty = []
-var state_age = []
-var state_houseIncome = []
+// var state_names = []
+// var state_obesity = []
+// var state_smoking = []
+// var state_lackHealth = []
+// var state_poverty = []
+// var state_age = []
+// var state_houseIncome = []
 
 d3.csv("assets/data/data.csv").then(function(censusData){
 
@@ -47,6 +47,16 @@ d3.csv("assets/data/data.csv").then(function(censusData){
         data.poverty = +data.poverty
         data.age = +data.age
         data.income = +data.income
+
+console.log(data.obesity)
+console.log(data.abbr)
+// console.log(state_obesity)
+// console.log(state_smoking)
+// console.log(state_lackHealth)
+// console.log(state_poverty)
+// console.log(state_age)
+// console.log(state_houseIncome)
+
 
 
 
@@ -71,16 +81,24 @@ d3.csv("assets/data/data.csv").then(function(censusData){
     //    state_age.push(age)
     //    state_houseIncome.push(houseIncome)
     });
-
     
+
+
+
+
+
+
+
+
+
     // create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.extent(censusData, d => d.poverty)])
+      .domain([d3.min(censusData, d => d.poverty) - 1, d3.max(censusData, d => d.poverty) + 1])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.extent(censusData, d => d.healthcare)])
+      .domain([d3.min(censusData, d => d.healthcare) - 1, d3.max(censusData, d => d.healthcare) + 1])
       .range([height, 0]);
 
     // Create axis functions
@@ -109,6 +127,19 @@ d3.csv("assets/data/data.csv").then(function(censusData){
     .attr("fill", "blue")
     .attr("opacity", ".75");
 
+    // adding state abbr to circles
+   chartGroup.selectAll("text")
+    .data(censusData)
+    .enter()
+    
+    .append("text")
+    
+    .attr("x", d => xLinearScale(d.poverty) -7)
+    .attr("y", d => yLinearScale(d.healthcare) +4)
+    .text(function(d) { return d.abbr })
+    .attr("font-size", "12px")
+    .attr("fill", 'white')
+
 
     // creating tootip
     // ==============================
@@ -132,13 +163,52 @@ d3.csv("assets/data/data.csv").then(function(censusData){
           toolTip.hide(data);
         });
 
-    // creating axes labels
-    
+    // creating x-axis labels for clicking
+    var xlabelsGroup = chartGroup.append("g")
+    .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-    chartGroup.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-      .attr("class", "axisText")
-      .text("Poverty Rate (%)");
+
+    var PovertyLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 20)
+    .attr("class", "axisText")
+    .attr("value", "poverty") // value to grab for event listener
+    .classed("active", true)
+    .text("Poverty Rate (%)");
+
+  var AgeLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("class", "axisText")
+    .attr("value", "age") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Age (Median)");
+
+
+    var AgeLabel = xlabelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 60)
+    .attr("class", "axisText")
+    .attr("value", "income") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Household Income (Median)");
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // chartGroup.append("text")
+    //   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+    //   .attr("class", "axisText")
+    //   .text("Poverty Rate (%)");
 
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
@@ -152,10 +222,3 @@ d3.csv("assets/data/data.csv").then(function(censusData){
     console.log(error);
 });
 
-console.log(state_names)
-console.log(state_obesity)
-console.log(state_smoking)
-console.log(state_lackHealth)
-console.log(state_poverty)
-console.log(state_age)
-console.log(state_houseIncome)
