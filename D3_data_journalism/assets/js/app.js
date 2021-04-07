@@ -132,22 +132,15 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   return circlesGroup;
 }
 
-  //  adding state abbr to circles
-  // function updateAbbr(chosenXAxis, chosenYAxis, chartGroup, censusData) {
-  //   chartGroup.selectAll("text")
-  //   .data(censusData)
-  //   .enter()
-  //   .append("text")
-  //   .attr("x", d => xLinearScale(d[chosenXAxis]) )
-  //   .attr("y", d => yLinearScale(d[chosenYAxis]) )
-  //   .text(function(d) { return d.abbr })
-  //   .attr("font-size", "12px")
-  //   .attr("fill", 'white')
+function updateAbbr(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis){
+  circlesGroup.transition()
+  .duration(1000)
+  .attr("x", d => xLinearScale(d[chosenXAxis]))
+  .attr("y", d => yLinearScale(d[chosenYAxis]));
 
-  //   return chartGroup
-  //  };
-
-
+return circlesGroup;
+     
+}
 
 d3.csv("assets/data/data.csv").then(function(censusData, err){
   if (err) throw err;
@@ -207,7 +200,19 @@ var leftAxis = d3.axisLeft(yLinearScale);
     .attr("opacity", ".75");
 
 
+    //  adding state abbr to circles
+    
+    var circlesGroup = chartGroup.selectAll("text")
+      .data(censusData)
+      .enter()
+      .append("text")
+      .attr("x", d => xLinearScale(d[chosenXAxis]) )
+      .attr("y", d => yLinearScale(d[chosenYAxis]) )
+      .text(function(d) { return d.abbr })
+      .attr("font-size", "12px")
+      .attr("fill", 'white')
   
+      
 
    // creating x-axis labels for clicking
    var xlabelsGroup = chartGroup.append("g")
@@ -276,7 +281,8 @@ var leftAxis = d3.axisLeft(yLinearScale);
 
    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
-  //  var circlesGroup = updateAbbr(chosenXAxis, chosenYAxis, circlesGroup, censusData)
+
+   var circlesGroup = updateAbbr(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis)
 
    
     
@@ -306,6 +312,9 @@ var leftAxis = d3.axisLeft(yLinearScale);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+        //update abbr locations
+        circlesGroup = updateAbbr(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis)
 
         // changes classes to change bold text
         if (chosenXAxis === "poverty") {
