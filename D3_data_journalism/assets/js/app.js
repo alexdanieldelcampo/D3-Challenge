@@ -88,7 +88,7 @@ function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYA
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup) {
 
   var xlabel;
   var ylabel;
@@ -129,6 +129,15 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
       toolTip.hide(data);
     });
 
+  // This is so the tooltip does not go away when the cursor hits the State text in circle
+    abbrGroup.on("mouseover", function(data) {
+      toolTip.show(data, this)
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
+
   return circlesGroup;
 }
 
@@ -136,7 +145,7 @@ function updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYA
   abbrGroup.transition()
   .duration(1000)
   .attr("x", d => xLinearScale(d[chosenXAxis]))
-  .attr("y", d => yLinearScale(d[chosenYAxis]));
+  .attr("y", d => yLinearScale(d[chosenYAxis] -.4));
 
 return abbrGroup;
      
@@ -155,9 +164,9 @@ d3.csv("assets/data/data.csv").then(function(censusData, err){
         data.poverty = +data.poverty
         data.age = +data.age
         data.income = +data.income
-      console.log
+      console.log(data.abbr)
       });
-
+ 
 // console.log(state_obesity)
 // console.log(state_smoking)
 // console.log(state_lackHealth)
@@ -209,8 +218,9 @@ var leftAxis = d3.axisLeft(yLinearScale);
       .attr("x", d => xLinearScale(d[chosenXAxis] ) )
       .attr("y", d => yLinearScale(d[chosenYAxis] ) )
       .text(function(d) { return d.abbr })
-      .attr("font-size", "12px")
-      .attr("fill", 'black')
+      // .attr("font-size", "15px")
+      // .attr("fill", 'black')
+      .classed("stateText", true);
           
   
       
@@ -280,7 +290,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
    .classed("inactive", true)
    .text("Obese (%)");
 
-   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup);
 
 
    var abbrGroup = updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis)
@@ -312,7 +322,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
         circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup);
 
         //update abbr locations
         abbrGroup = updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis)
@@ -379,7 +389,7 @@ ylabelsGroup.selectAll("text")
     circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
 
     // updates tooltips with new info
-    circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+    circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup);
 
     //update abbr locations
     abbrGroup = updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis)
@@ -422,58 +432,8 @@ ylabelsGroup.selectAll("text")
 });
 
 
-   
-   
 
-    
-
-   
-
-
-    // creating tootip
-    // ==============================
-    // var toolTip = d3.tip()
-    //   .attr("class", "tooltip")
-    //   .offset([80, -60])
-    //   .html(function(d) {
-    //     return (`${d.state}<br>Poverty %: ${d.poverty}<br>No Healthcare %: ${d.healthcare}`);
-    //   });
-
-    // // place tooltip in the chart
-    // // ==============================
-    // chartGroup.call(toolTip);
-
-    // // event listener for showing/hiding tooltip
-    // circlesGroup.on("click", function(data) {
-    //     toolTip.show(data, this);
-    //   })
-    //     // onmouseout event
-    // .on("mouseout", function(data, index) {
-    //       toolTip.hide(data);
-    //     });
-
-    
-
-
-
-
-
-
-
-    // chartGroup.append("text")
-    //   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-    //   .attr("class", "axisText")
-    //   .text("Poverty Rate (%)");
-
-    // chartGroup.append("text")
-    //   .attr("transform", "rotate(-90)")
-    //   .attr("y", 0 - margin.left + 40)
-    //   .attr("x", 0 - (height / 2))
-    //   .attr("dy", "1em")
-    //   .attr("class", "axisText")
-    //   .text("Lack of Healthcare (%)");
-
-  }).catch(function(error) {
+}).catch(function(error) {
     console.log(error);
 });
 
