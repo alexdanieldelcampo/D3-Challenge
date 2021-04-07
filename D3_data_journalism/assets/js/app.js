@@ -40,7 +40,7 @@ var chosenXAxis = "poverty"
 
 function xScale(censusData, chosenXAxis) {
 var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenXAxis]), d3.max(censusData, d => d[chosenXAxis])])
+      .domain([d3.min(censusData, d => d[chosenXAxis] * 0.95), d3.max(censusData, d => d[chosenXAxis] * 1.02)])
       .range([0, width]);
 
     return xLinearScale
@@ -51,7 +51,7 @@ var chosenYAxis = "healthcare"
 
 function yScale(censusData, chosenYAxis) {
 var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenYAxis])  , d3.max(censusData, d => d[chosenYAxis])])
+      .domain([d3.min(censusData, d => d[chosenYAxis]* 0.8)  , d3.max(censusData, d => d[chosenYAxis] * 1.2)])
       .range([height, 0]);
 
     return yLinearScale
