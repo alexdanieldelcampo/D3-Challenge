@@ -164,6 +164,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err){
         data.poverty = +data.poverty
         data.age = +data.age
         data.income = +data.income
+        data.abbr = data.abbr
       console.log(data.abbr)
       });
  
@@ -212,6 +213,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
     //  adding state abbr to circles
     
     var abbrGroup = chartGroup.selectAll("text")
+      .exit()
       .data(censusData)
       .enter()
       .append("text")
@@ -290,12 +292,15 @@ var leftAxis = d3.axisLeft(yLinearScale);
    .classed("inactive", true)
    .text("Obese (%)");
 
-   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup);
 
 
+  
+
+   var circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
+   
    var abbrGroup = updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis)
 
-   
+   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, abbrGroup);
     
 
 
