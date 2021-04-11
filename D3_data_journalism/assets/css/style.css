@@ -29,3 +29,10 @@ body {
   margin: 0;
   font-size: 16px;
 }
+
+h1, h2 {
+  text-align: center
+}
+p {
+  text-align: center;
+}
