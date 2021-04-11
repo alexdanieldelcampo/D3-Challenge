@@ -234,7 +234,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
 
    var PovertyLabel = xlabelsGroup.append("text")
    .attr("x", 0)
-   .attr("y", 20)
+   .attr("y", 19)
    .attr("class", "axisText")
    .attr("value", "poverty") // value to grab for event listener
    .classed("active", true)
@@ -242,7 +242,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
 
  var AgeLabel = xlabelsGroup.append("text")
    .attr("x", 0)
-   .attr("y", 40)
+   .attr("y", 39)
    .attr("class", "axisText")
    .attr("value", "age") // value to grab for event listener
    .classed("inactive", true)
@@ -251,7 +251,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
 
    var HouseholdLabel = xlabelsGroup.append("text")
    .attr("x", 0)
-   .attr("y", 60)
+   .attr("y", 59)
    .attr("class", "axisText")
    .attr("value", "income") // value to grab for event listener
    .classed("inactive", true)
