@@ -51,7 +51,7 @@ var chosenYAxis = "healthcare"
 
 function yScale(censusData, chosenYAxis) {
 var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenYAxis]* 0.8)  , d3.max(censusData, d => d[chosenYAxis] * 1.2)])
+      .domain([d3.min(censusData, d => d[chosenYAxis]* .95)  , d3.max(censusData, d => d[chosenYAxis] * 1)])
       .range([height, 0]);
 
     return yLinearScale
@@ -145,7 +145,7 @@ function updateAbbr(abbrGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYA
   abbrGroup.transition()
   .duration(1000)
   .attr("x", d => xLinearScale(d[chosenXAxis]))
-  .attr("y", d => yLinearScale(d[chosenYAxis] -.4));
+  .attr("y", d => yLinearScale(d[chosenYAxis] -.2));
 
 return abbrGroup;
      
@@ -205,7 +205,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
-    .attr("r", "15")
+    .attr("r", "12")
     // .attr("fill", "#2ca25f")
     // .attr("opacity", "0.8")
     .classed("stateCircle", true);
@@ -220,7 +220,7 @@ var leftAxis = d3.axisLeft(yLinearScale);
       .attr("x", d => xLinearScale(d[chosenXAxis] ) )
       .attr("y", d => yLinearScale(d[chosenYAxis] ) )
       .text(function(d) { return d.abbr })
-      // .attr("font-size", "15px")
+      .attr("font-size", "12px")
       // .attr("fill", 'black')
       .classed("stateText", true);
           
